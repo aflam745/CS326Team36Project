@@ -1,3 +1,10 @@
+#map {
+    height: 400px;
+    width: calc(100% + 16px);
+    z-index: 5;
+    margin-left: -8px;
+}
+
 .leaflet-tooltip.leaflet-label {
     font-size: 15px;
     background-color: white;
