@@ -107,23 +107,4 @@ export class HomePageComponent extends BaseComponent {
     // Remove the form
     formElement.remove();
   }
-
-  #getTemplate() {
-    return `
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Itineraries</title>
-    <link rel="stylesheet" href="itineraryComponent.css">
-  </head>
-  <body>
-    <header>
-  <h1>Way2Go</h1>
-  </header>
-  <div class="container" id="tile-container">
-    <div class="tile plus-tile" id="add-tile" onclick="showForm()">+</div>
-  </div>
-  <script src="itineraryComponent.js"> </script>
-  </body>`;
-  }
 }
