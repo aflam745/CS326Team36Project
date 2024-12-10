@@ -17,6 +17,7 @@ export class HomePageComponent extends BaseComponent {
 
   render() {
     this.#createContainer();
+    this.#fetchAndDisplayItineraries();
     return this.#container;
   }
 
@@ -48,7 +49,7 @@ export class HomePageComponent extends BaseComponent {
       const fd = new FormData(event.target)
       const locationEntries = this.#formComponent.getLocationEntries();
       console.log(locationEntries);
-      
+
       const obj = Object.fromEntries(fd);
       obj["startLocation"] = locationEntries.startLocationEntry;
       obj["endLocation"] = locationEntries.endLocationEntry;
@@ -65,10 +66,14 @@ export class HomePageComponent extends BaseComponent {
         ...itineraryId,
       });
 
+      this.#addItineraryTile(formElement.querySelector("#location").value);
+
+      // Remove the form
+      formElement.remove();
+
       const serializedParams = serializeQueryParams(itineraryId);
       const url = constructURLFromPath('/editItinerary', serializedParams);
       navigate(url);
-      this.#addItineraryTile(formElement);
     };
   }
 
@@ -82,48 +87,34 @@ export class HomePageComponent extends BaseComponent {
       });
   }
 
-  #addItineraryTile(formElement) {
-    // Get form values
-    const title = formElement.querySelector("#location").value;
-
+  #addItineraryTile(title) {
     // Create a new tile
     const newTile = document.createElement("div");
     newTile.classList.add("tile");
     newTile.textContent = title;
 
-    // Add navigation functionality to the tile
-    newTile.onclick = () => {
-      // Update the URL without reloading the page
-      const pageURL = `/activity/${encodeURIComponent(title)}`;
-      history.pushState({}, "", pageURL);
+    // // Add navigation functionality to the tile
+    // newTile.onclick = () => {
+    //   // Update the URL without reloading the page
+    //   const pageURL = `/activity/${encodeURIComponent(title)}`;
+    //   history.pushState({}, "", pageURL);
 
-      // Let the RouterComponent handle rendering the new page
-      dispatchEvent(new PopStateEvent("popstate"));
-    };
+    //   // Let the RouterComponent handle rendering the new page
+    //   dispatchEvent(new PopStateEvent("popstate"));
+    // };
 
     // Append the new tile to the container
     this.#container.appendChild(newTile);
-
-    // Remove the form
-    formElement.remove();
   }
 
-  #getTemplate() {
-    return `
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Itineraries</title>
-    <link rel="stylesheet" href="itineraryComponent.css">
-  </head>
-  <body>
-    <header>
-  <h1>Way2Go</h1>
-  </header>
-  <div class="container" id="tile-container">
-    <div class="tile plus-tile" id="add-tile" onclick="showForm()">+</div>
-  </div>
-  <script src="itineraryComponent.js"> </script>
-  </body>`;
+  async #fetchAndDisplayItineraries() {
+    try {
+      const itineraries = await this.#itineraryDB.getAllActivity();
+      itineraries.forEach(data => {
+        this.#addItineraryTile(data.location)
+      });
+    } catch (error) {
+      console.error('failed to fetch itineraries from ItineraryDB:', error);
+    }
   }
 }

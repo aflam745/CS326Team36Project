@@ -1,19 +1,82 @@
-.itinerary-form {
-    width: 650px;
-    padding: 10px;
-    font-size: 1rem;
-    margin-bottom: 10px;
-    background: white;
-    border: 1px solid var(--border-light-gray);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    box-sizing: border-box;
-    display: flex;
-  }
+.form-container {
+  position: relative;
+  width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
+/* Close button styling */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #aaa;
+  transition: color 0.3s;
+}
 
-.itinerary-form h2 {
+.close-button:hover {
+  color: #000;
+}
+
+form h2 {
   margin-top: 0;
-  font-size: 1.5rem;
   text-align: center;
+}
+
+form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="file"],
+form input[type="datetime-local"],
+form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form textarea {
+  resize: vertical;
+}
+
+form button {
+  margin-top: 20px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#add-itinerary {
+  background-color: #28a745;
+  color: white;
+  margin-right: 10px;
+}
+
+#add-itinerary:hover {
+  background-color: #218838;
+}
+
+#clear {
+  background-color: #dc3545;
+  color: white;
+}
+
+#clear:hover {
+  background-color: #c82333;
 }

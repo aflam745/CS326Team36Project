@@ -454,48 +454,48 @@ export class ActivityFormComponent extends BaseComponent {
 
     #getTemplate() {
         return `
-    <form>
-      <h2>Add New Activity</h2>
+        <form>
+            <h2>Add New Activity</h2>
 
-      <input type="hidden" id="id" name="id">
+            <input type="hidden" id="id" name="id">
 
-      <label for="name">Activity name:</label>
-      <input type="text" id="name" name="name" placeholder="Enter activity name" required>
-      <br>
+            <label for="name">Activity name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter activity name" required>
+            <br>
 
-      <label for="start-time">Earliest start time:</label>
-      <input type="datetime-local" id="start-time" name="earliestStartTime">
-      <br>
-      <label for="end-time">Latest finish time:</label>
-      <input type="datetime-local" id="end-time" name="latestEndTime">
-      <br>
+            <label for="start-time">Earliest start time:</label>
+            <input type="datetime-local" id="start-time" name="earliestStartTime">
+            <br>
+            <label for="end-time">Latest finish time:</label>
+            <input type="datetime-local" id="end-time" name="latestEndTime">
+            <br>
 
-      <label for="duration-hours">Duration:</label>
-      <input type="number" id="duration-hours" name="durationHours" placeholder="Hours" min="0" required><a>h</a>
-      <input type="number" id="duration-minutes" name="durationMinutes" placeholder="Minutes" min="0" max="59" required><a>m</a>
-      <button type="button" id="set-full-duration">Activity spans the full time interval</button>
-      <br>
+            <label for="duration-hours">Duration:</label>
+            <input type="number" id="duration-hours" name="durationHours" placeholder="Hours" min="0" required><a>h</a>
+            <input type="number" id="duration-minutes" name="durationMinutes" placeholder="Minutes" min="0" max="59" required><a>m</a>
+            <button type="button" id="set-full-duration">Activity spans the full time interval</button>
+            <br>
 
-      <label for="location-search">Address:</label>
-      <div id="location-search-container"></div>
-      <br>
+            <label for="location-search">Address:</label>
+            <div id="location-search-container"></div>
+            <br>
 
-      <label for="activity-type">Type of activity:</label>
-      <select id="activity-type" name="activityType">
-        <option value="Activity">Activity</option>
-        <option value="Breakfast">Breakfast</option>
-        <option value="Lunch">Lunch</option>
-        <option value="Dinner">Dinner</option>
-      </select>
-      <br>
+            <label for="activity-type">Type of activity:</label>
+            <select id="activity-type" name="activityType">
+                <option value="Activity">Activity</option>
+                <option value="Breakfast">Breakfast</option>
+                <option value="Lunch">Lunch</option>
+                <option value="Dinner">Dinner</option>
+            </select>
+            <br>
 
-      <label for="notes">Notes:</label>
-      <textarea id="notes" name="notes"></textarea>
-      <br>
+            <label for="notes">Notes:</label>
+            <textarea id="notes" name="notes"></textarea>
+            <br>
 
-      <button id="add-activity">Add Activity</button>
-      <button id="clear">Clear</button>
-    </form>
+            <button id="add-activity">Add Activity</button>
+            <button id="clear">Clear</button>
+        </form>
   `;
     }
 

@@ -16,6 +16,7 @@ export class ItineraryFormComponent extends BaseComponent {
 
   render() {
     this.#createContainer();
+    this.#attachEventListeners();
     return this.#container;
   }
 
@@ -33,39 +34,52 @@ export class ItineraryFormComponent extends BaseComponent {
 
   }
 
+  #attachEventListeners(){
+    const closeButton = this.#container.querySelector('#close-form');
+
+    closeButton.addEventListener('click', () => {
+      this.#container.remove();
+    })
+  }
+
   #getTemplate() {
     return `
-      <form>
-        <h2>Create New Itinerary</h2>
+      <div class="form-container" id="itinerary-form-container">
 
-        <label for="location">Name of Trip:</label>
-        <input type="text" id="location" name="location" placeholder="Enter name" required>
-        <br>
+        <button class="close-button" id="close-form" aria-label="Close form">&times;</button>
 
-        <label for="picture">Insert Picture:</label>
-        <input type="file" id="picture" name="picture" accept="image/*">
-        <br>
+        <form>
+          <h2>Create New Itinerary</h2>
 
-        <label for="start-location-container">Enter start location</label>
-        <div id="start-location-container"></div>
-        <label for="end-ocation-container">Enter end location</label>
-        <div id="end-location-container"></div>
+          <label for="location">Name of Trip:</label>
+          <input type="text" id="location" name="location" placeholder="Enter name" required>
 
-        <label for="start-date">Start Date & Time:</label>
-        <input type="datetime-local" id="start-date" name="startDate" required>
-        <br>
+          <label for="picture">Insert Picture:</label>
+          <input type="file" id="picture" name="picture" accept="image/*">
 
-        <label for="endDate">End Date & Time:</label>
-        <input type="datetime-local" id="end-date" name="endDate" required>
-        <br>
+          <label for="start-location-container">Enter start location</label>
+          <div id="start-location-container">
+            <!-- Start location input can be added here -->
+          </div>
 
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" rows="4" cols="30" placeholder="Add a description..."></textarea>
-        <br>
+          <label for="end-location-container">Enter end location</label>
+          <div id="end-location-container">
+            <!-- End location input can be added here -->
+          </div>
 
-        <button id="add-itinerary" type="submit">Create Itinerary</button>
-        <button id="clear" type="reset">Clear</button>
-      </form>
+          <label for="start-date">Start Date & Time:</label>
+          <input type="datetime-local" id="start-date" name="startDate" required>
+
+          <label for="end-date">End Date & Time:</label>
+          <input type="datetime-local" id="end-date" name="endDate" required>
+
+          <label for="description">Description:</label>
+          <textarea id="description" name="description" rows="4" cols="30" placeholder="Add a description..."></textarea>
+
+          <button id="add-itinerary" type="submit">Create Itinerary</button>
+          <button id="clear" type="reset">Clear</button>
+        </form>
+      </div>
     `;
   }
 }
