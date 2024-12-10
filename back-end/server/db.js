@@ -1,5 +1,8 @@
 const fs = require('node:fs')
 const { Sequelize, DataTypes, QueryTypes } = require('sequelize')
+const sqlite3 = require('sqlite3')
+
+exports.db = new sqlite3.Database('records.db')
 
 /**
   * @typedef {Object} Itinerary
@@ -27,14 +30,30 @@ const db = new Sequelize({ dialect: 'sqlite', storage: 'records.db' })
 const itineraryModel = db.define('itinerary', {
   id: { primaryKey: true, type: DataTypes.STRING },
   data: { allowNull: false, type: DataTypes.STRING },
-  imagePath: DataTypes.STRING
-})
+  imagePath: DataTypes.STRING,
+}, { freezeTableName: true }
+)
 
 const ActivityModel = db.define('activity', {
   id: { type: DataTypes.STRING, primaryKey: true },
   itineraryId: { type: DataTypes.STRING, allowNull: false },
   data: { allowNull: false, type: DataTypes.STRING }
-})
+}, { freezeTableName: true }
+)
+
+
+async function initializeDatabase() {
+    try {
+        await db.authenticate();
+        console.log('Connection established.');
+        await db.sync();
+        console.log('Database synchronized.');
+    } catch (error) {
+        console.error('Error initializing the database:', error);
+    }
+}
+
+initializeDatabase()
 
 
 /**
@@ -44,16 +63,17 @@ const ActivityModel = db.define('activity', {
   * Saves the itinerary as a JSON String to the database
   */
 async function saveItinerary(itinerary, imagePath) {
+    console.log("here with itinerary:", itinerary)
   return await db.query(
-    `insert into itinerary values(?, json(?), ?)`,
-    { raw: true, replacements: [itinerary.id, JSON.stringify(itinerary), imagePath ?? null], type: QueryTypes.INSERT }
+    `insert into itinerary values(?, json(?), ?, ?, ?)`,
+      { raw: true, replacements: [itinerary.id, JSON.stringify(itinerary), imagePath ?? null, new Date(), new Date()], type: QueryTypes.INSERT }
   )
 }
 
 async function saveActivity(activity) {
   return await db.query(
-    `insert into activity values(?, json(?))`,
-    { raw: true, replacements: [activity.id, JSON.stringify(activity)], type: QueryTypes.INSERT }
+    `insert into activity values(?, json(?), ?, ?)`,
+      { raw: true, replacements: [activity.id, JSON.stringify(activity), null, new Date(), new Date()], type: QueryTypes.INSERT }
   )
 }
 
@@ -124,14 +144,14 @@ async function loadItineraryWithActivities(id) {
   * @param {Activity[]} activites 
   */
 async function saveActivities(activites) {
-  const a = activites.map(arr => [a.id, a.itineraryId, JSON.stringify(a)])
+  const date = new Date(); // date for createdAt/updatedAt fields
+  const a = activites.map(arr => [a.id, a.itineraryId, JSON.stringify(a)], date, date)
   const result = await db.query(`insert into activity values ${data.map(a => '(?)').join(',')}`, {
     replacements: a
   })
   return
 }
 
-exports.db = new sqlite3('records.db')
 exports.loadItinerary = loadItinerary
 exports.saveItinerary = saveItinerary
 exports.saveActivity = saveActivity

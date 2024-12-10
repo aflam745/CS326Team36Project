@@ -2,3 +2,4 @@ front-end/node_modules
 front-end/pnpm-lock.yaml
 back-end/node_modules
 back-end/.env
+back-end/records.db
