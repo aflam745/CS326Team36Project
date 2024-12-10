@@ -117,4 +117,20 @@ export class ActivityDatabase {
         };
       });
     }
+
+    async deleteAllEntries() {
+      const db = await this.openDatabase();
+      const tx = db.transaction("activities", "readwrite");
+      const store = tx.objectStore("activities");
+
+      store.clear();
+      return new Promise((resolve, reject) => {
+        tx.oncomplete = function () {
+          resolve("All entries deleted successfully!");
+        };
+        tx.onerror = function () {
+          reject("Entries deletion failed!");
+        };
+      });
+    }
   }

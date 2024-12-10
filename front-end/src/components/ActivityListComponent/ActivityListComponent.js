@@ -62,6 +62,14 @@ export class ActivityListComponent extends BaseComponent {
     generateItineraryButton.addEventListener('click', async (e) => {
         // await Itinerary.optimizeRoute();
 
+        this.#activityDB.deleteAllEntries()
+          .then((message) => {
+            console.log(message);
+          })
+          .catch((error) => {
+            console.error("Failed to delete all activities from ActivityDB:", error);
+          });
+
         const queryParams = getQueryParams(window.location);
         const itineraryId = { id: queryParams.id }
         const serializedParams = serializeQueryParams(itineraryId);
