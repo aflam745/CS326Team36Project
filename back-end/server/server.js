@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const { saveActivities, loadItineraryWithActivities } = require('./db');
 require('dotenv').config();
+//Next two lines are for user routes
+const {body, validationRes} = require('express-validator');
+const User = require('../models/user.js');
 
 const fetch = (...args) =>
     import('node-fetch').then(({ default: fetch }) => fetch(...args));
@@ -50,7 +53,35 @@ app.post('/optimize', async(req, res) => {
 
     const data = await response.json();
     res.json({ data });
-})
+});
+
+//POST for /register
+app.post(
+    '/register',
+    [
+        body('username').notEmpty().withMessage('Username is required.'),
+        body('email').isEmail().withMessage('Invalid email format.'),
+        body('googleId').notEmpty().withMessage('Google ID is required.'),
+    ],
+    async (req, res) => {
+        const errors = validationRes(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const { username, email, googleId } = req.body;
+        try {
+            const newUser = await User.create({ username, email, googleId });
+            res.status(201).json({ message: 'User registered successfully', user: newUser });
+        } catch (error) {
+            if (error.name === 'SequelizeUniqueConstraintError') {
+                res.status(409).json({ error: 'Google ID, email, or username already exists.' });
+            } else {
+                console.error(error);
+                res.status(500).json({ error: 'Internal server error' });
+            }
+        }
+    }
+);
 
 app.get('/loadItinerary', async (req, res) => {
   const body = req.body
